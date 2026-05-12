@@ -1,3 +1,15 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "headers": [
+    {
+      "source": "/(slides|waitlist).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/slides.html", "destination": "/slides.html" },
+    { "source": "/waitlist.html", "destination": "/waitlist.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
