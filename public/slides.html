@@ -610,5 +610,33 @@
   </div>
 </div>
 
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.slide').forEach(slide => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'slide-wrapper';
+      slide.parentNode.insertBefore(wrapper, slide);
+      wrapper.appendChild(slide);
+    });
+
+    function scaleSlides() {
+      const scale = Math.min(1, (window.innerWidth - 32) / 1080);
+      document.querySelectorAll('.slide-wrapper').forEach(wrapper => {
+        wrapper.style.width = (1080 * scale) + 'px';
+        wrapper.style.height = (1920 * scale) + 'px';
+        wrapper.style.overflow = 'hidden';
+        wrapper.style.position = 'relative';
+        wrapper.style.flexShrink = '0';
+        const slide = wrapper.querySelector('.slide');
+        slide.style.transform = 'scale(' + scale + ')';
+        slide.style.transformOrigin = 'top left';
+      });
+    }
+
+    scaleSlides();
+    window.addEventListener('resize', scaleSlides);
+  });
+</script>
 </body>
 </html>
