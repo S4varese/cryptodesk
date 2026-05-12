@@ -9,59 +9,36 @@
     -webkit-tap-highlight-color: transparent;
   }
   body {
-    @apply text-white antialiased;
+    @apply antialiased;
     font-family: 'Inter', sans-serif;
-    background-color: #080808;
+    background-color: #f5f7ff;
+    color: #0a0a0a;
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
 @layer utilities {
-  /* Glow effects */
-  .glow-gold   { box-shadow: 0 0 24px rgba(212, 175, 55, 0.25); }
-  .glow-amber  { box-shadow: 0 0 24px rgba(245, 158, 11, 0.2); }
-  .glow-green  { box-shadow: 0 0 24px rgba(16, 185, 129, 0.2); }
-  .glow-red    { box-shadow: 0 0 24px rgba(239, 68, 68, 0.2); }
-
-  /* Base card — dark premium */
   .card {
     @apply rounded-2xl p-4;
-    background: #111111;
-    border: 1px solid #222222;
+    background: #ffffff;
+    border: 1px solid #eaedff;
+    box-shadow: 0 1px 4px rgba(26, 86, 255, 0.05);
   }
 
-  /* Hero card con bordo oro */
-  .card-gold {
-    @apply card glow-gold;
-    border-color: rgba(212, 175, 55, 0.35);
-    background: linear-gradient(135deg, #161410 0%, #111111 100%);
+  .card-hero {
+    @apply rounded-2xl p-5;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+    border: 1px solid rgba(26, 86, 255, 0.18);
+    box-shadow: 0 2px 12px rgba(26, 86, 255, 0.08);
   }
 
-  /* Card profitto */
-  .card-green {
-    @apply card glow-green;
-    border-color: rgba(16, 185, 129, 0.3);
-  }
-
-  /* Card perdita */
-  .card-red {
-    @apply card glow-red;
-    border-color: rgba(239, 68, 68, 0.3);
-  }
-
-  /* Testo oro */
-  .text-gold { color: #D4AF37; }
-  .text-gold-light { color: #F0C848; }
-
-  /* Separatore sottile */
-  .divider {
-    border-top: 1px solid #1a1a1a;
-  }
-
-  /* Label uppercase piccola */
   .label {
     @apply text-xs font-semibold uppercase tracking-widest;
-    color: #555555;
+    color: #a0a8c0;
+  }
+
+  .divider {
+    border-top: 1px solid #f0f3ff;
   }
 }

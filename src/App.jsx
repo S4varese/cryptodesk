@@ -12,7 +12,7 @@ function Skeleton() {
   return (
     <div className="space-y-3 animate-pulse">
       {[140, 90, 200, 140].map((h, i) => (
-        <div key={i} className="rounded-2xl" style={{ height: h, background: '#111', border: '1px solid #1a1a1a' }} />
+        <div key={i} className="rounded-2xl" style={{ height: h, background: '#eaedff' }} />
       ))}
     </div>
   )
@@ -20,7 +20,7 @@ function Skeleton() {
 
 export default function App() {
   const { prices, portfolio, loading, error, lastUpdate, refresh, PAIRS } = useKrakenData()
-  const [activePage, setActivePage]   = useState('portfolio')
+  const [activePage, setActivePage] = useState('portfolio')
   const [selectedCoin, setSelectedCoin] = useState(null)
 
   if (selectedCoin) {
@@ -39,7 +39,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#080808' }}>
+    <div className="min-h-screen" style={{ background: '#f5f7ff' }}>
       <Header
         lastUpdate={lastUpdate}
         loading={loading}
@@ -49,7 +49,7 @@ export default function App() {
 
       <main className="max-w-lg mx-auto px-4 py-4 pb-28 space-y-5">
         {error && (
-          <div className="rounded-2xl p-3 text-xs text-center" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444' }}>
+          <div className="rounded-2xl p-3 text-xs text-center" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', color: '#ef4444' }}>
             ⚠️ {error} — riprovo tra 15s
           </div>
         )}
