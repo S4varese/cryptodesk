@@ -2,10 +2,11 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 
 function CustomTooltip({ active, payload }) {
   if (!active || !payload?.length) return null
+  const p = payload[0].payload
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs">
       <p className="text-purple-400 font-bold">€{payload[0].value.toFixed(2)}</p>
-      <p className="text-slate-500">Giorno {payload[0].payload.day}</p>
+      <p className="text-slate-500">{p.date ?? `Giorno ${p.day}`}</p>
     </div>
   )
 }

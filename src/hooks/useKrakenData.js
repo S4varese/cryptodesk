@@ -18,9 +18,11 @@ async function fetchKrakenTicker() {
 
   return Object.entries(PAIRS).reduce((acc, [coin, meta]) => {
     const entry = data.result[meta.kraken] || Object.values(data.result)[0]
+    const price = parseFloat(entry?.c?.[0] || 0)
+    const open  = parseFloat(entry?.o  || 0)
     acc[coin] = {
-      price:  parseFloat(entry?.c?.[0] || 0),
-      change: parseFloat(entry?.p?.[1] || 0), // 24h VWAP-based change
+      price,
+      change: open > 0 ? ((price - open) / open) * 100 : 0,
       high:   parseFloat(entry?.h?.[1] || 0),
       low:    parseFloat(entry?.l?.[1] || 0),
       volume: parseFloat(entry?.v?.[1] || 0),
@@ -31,15 +33,28 @@ async function fetchKrakenTicker() {
 
 async function fetchBotPortfolio() {
   if (!BOT_API) return null
-  try {
-    const res = await fetch(`${BOT_API}/portfolio`, { signal: AbortSignal.timeout(8000) })
-    if (!res.ok) return null
-    const data = await res.json()
-    // Normalizza la risposta dell'API reale aggiungendo equityCurve
-    return { ...data, equityCurve: generateMockEquity(data.total) }
-  } catch {
-    return null
+  const res = await fetch(`${BOT_API}/portfolio`, { signal: AbortSignal.timeout(8000) })
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}))
+    throw new Error(`API ${res.status}: ${JSON.stringify(body.detail ?? body)}`)
   }
+  const data = await res.json()
+
+  // Prova a caricare l'equity curve reale dallo storico trade
+  let equityCurve = generateMockEquity(data.total)
+  try {
+    const tradesRes = await fetch(`${BOT_API}/trades`, { signal: AbortSignal.timeout(8000) })
+    if (tradesRes.ok) {
+      const tradesData = await tradesRes.json()
+      if (tradesData.equityCurve?.length > 1) {
+        equityCurve = tradesData.equityCurve.map((p, i) => ({ day: i + 1, value: p.value, date: p.date }))
+        // Aggiunge il punto corrente
+        equityCurve.push({ day: equityCurve.length + 1, value: data.total, date: 'oggi' })
+      }
+    }
+  } catch { /* usa mock se /trades fallisce */ }
+
+  return { ...data, equityCurve }
 }
 
 // Dati mock usati finché Railway non è configurato

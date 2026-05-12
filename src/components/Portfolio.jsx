@@ -57,21 +57,28 @@ export default function Portfolio({ portfolio, prices }) {
       {/* Positions */}
       <div className="space-y-2">
         {Object.entries(positions).map(([coin, pos]) => {
-          const currentPrice = prices?.[coin]?.price || 0
+          const currentPrice = prices?.[coin]?.price || pos.price || 0
           const currentValue = pos.qty * currentPrice
-          const posChange = ((currentPrice - pos.entry) / pos.entry) * 100
-          const isPosPnl = posChange >= 0
+          const hasEntry = pos.entry != null && pos.entry > 0
+          const posChange = hasEntry ? ((currentPrice - pos.entry) / pos.entry) * 100 : null
+          const isPosPnl = (posChange ?? 0) >= 0
           return (
             <div key={coin} className="card flex items-center justify-between">
               <div>
                 <p className="text-sm font-bold text-white">{coin}</p>
-                <p className="text-xs text-slate-500">{fmt(pos.qty, 4)} @ €{fmt(pos.entry)}</p>
+                <p className="text-xs text-slate-500">
+                  {fmt(pos.qty, 4)} {hasEntry ? `@ €${fmt(pos.entry)}` : `· €${fmt(currentPrice)} live`}
+                </p>
               </div>
               <div className="text-right">
                 <p className="text-sm font-bold text-white">€{fmt(currentValue)}</p>
-                <p className={`text-xs font-semibold ${isPosPnl ? 'text-emerald-400' : 'text-red-400'}`}>
-                  {isPosPnl ? '+' : ''}{fmt(posChange)}%
-                </p>
+                {posChange != null ? (
+                  <p className={`text-xs font-semibold ${isPosPnl ? 'text-emerald-400' : 'text-red-400'}`}>
+                    {isPosPnl ? '+' : ''}{fmt(posChange)}%
+                  </p>
+                ) : (
+                  <p className="text-xs text-slate-600">— entry n/d</p>
+                )}
               </div>
             </div>
           )
