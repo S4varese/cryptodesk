@@ -16,8 +16,8 @@ export default function Header({ lastUpdate, loading, onRefresh, botStatus }) {
         <div className="flex items-center gap-2.5">
           <Logo size={34} />
           <div>
-            <p className="text-xs font-bold tracking-[0.2em] text-white">CRYPTODESK</p>
-            <p style={{ fontSize: '9px', letterSpacing: '0.15em', color: '#D4AF37' }}>TRADING TERMINAL</p>
+            <p className="text-xs font-bold tracking-[0.2em] text-white">BOTVAULT</p>
+            <p style={{ fontSize: '9px', letterSpacing: '0.15em', color: '#1a56ff' }}>TRADING TERMINAL</p>
           </div>
         </div>
 
