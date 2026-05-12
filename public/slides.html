@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BotVault — Slide TikTok</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -15,8 +16,49 @@
     flex-direction: column;
     gap: 16px;
     padding: 16px;
+    padding-bottom: 80px;
     align-items: center;
   }
+
+  #dl-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #0d0d0d;
+    border-top: 1px solid #2a2a2a;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 9999;
+    flex-wrap: wrap;
+  }
+  #dl-bar button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+  }
+  #dl-bar button:disabled { opacity: 0.4; cursor: not-allowed; }
+  #dl-btn-all {
+    background: #1a56ff;
+    color: white;
+    font-size: 13px;
+    padding: 9px 20px;
+    border-radius: 9px;
+    letter-spacing: 0.3px;
+  }
+  #dl-btn-all:not(:disabled):hover { background: #1245dd; }
+  .dl-btn-single {
+    background: #1c1c1c;
+    color: #aaa;
+    font-size: 12px;
+    padding: 7px 12px;
+    border-radius: 7px;
+    border: 1px solid #333 !important;
+  }
+  .dl-btn-single:not(:disabled):hover { background: #252525; color: white; }
 
   .slide {
     width: 1080px;
@@ -754,7 +796,82 @@
   </div>
 </div>
 
+<div id="dl-bar">
+  <button id="dl-btn-all" onclick="downloadAll()">⬇ Scarica tutte (7 PNG)</button>
+  <button class="dl-btn-single" onclick="downloadSingle(0)">01</button>
+  <button class="dl-btn-single" onclick="downloadSingle(1)">02</button>
+  <button class="dl-btn-single" onclick="downloadSingle(2)">03</button>
+  <button class="dl-btn-single" onclick="downloadSingle(3)">04</button>
+  <button class="dl-btn-single" onclick="downloadSingle(4)">05</button>
+  <button class="dl-btn-single" onclick="downloadSingle(5)">06</button>
+  <button class="dl-btn-single" onclick="downloadSingle(6)">07</button>
+</div>
+
 <script>
+  async function captureSlide(slide) {
+    const wrapper = slide.parentNode;
+    const origTransform = slide.style.transform;
+    const origWW = wrapper.style.width;
+    const origWH = wrapper.style.height;
+    const origOF = wrapper.style.overflow;
+
+    slide.style.transform = 'scale(1)';
+    slide.style.transformOrigin = 'top left';
+    wrapper.style.width = '1080px';
+    wrapper.style.height = '1920px';
+    wrapper.style.overflow = 'visible';
+
+    await document.fonts.ready;
+    const canvas = await html2canvas(slide, {
+      width: 1080,
+      height: 1920,
+      scale: 1,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+    });
+
+    slide.style.transform = origTransform;
+    wrapper.style.width = origWW;
+    wrapper.style.height = origWH;
+    wrapper.style.overflow = origOF;
+
+    return canvas;
+  }
+
+  async function downloadSingle(idx) {
+    const btns = document.querySelectorAll('#dl-bar button');
+    btns.forEach(b => b.disabled = true);
+    const slides = document.querySelectorAll('.slide');
+    const canvas = await captureSlide(slides[idx]);
+    const a = document.createElement('a');
+    a.download = `botvault-slide-${String(idx + 1).padStart(2, '0')}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    btns.forEach(b => b.disabled = false);
+  }
+
+  async function downloadAll() {
+    const allBtn = document.getElementById('dl-btn-all');
+    const btns = document.querySelectorAll('#dl-bar button');
+    btns.forEach(b => b.disabled = true);
+    const slides = document.querySelectorAll('.slide');
+    for (let i = 0; i < slides.length; i++) {
+      allBtn.textContent = `Scaricando ${i + 1} di ${slides.length}...`;
+      const canvas = await captureSlide(slides[i]);
+      const a = document.createElement('a');
+      a.download = `botvault-slide-${String(i + 1).padStart(2, '0')}.png`;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+      await new Promise(r => setTimeout(r, 700));
+    }
+    allBtn.textContent = '✓ Tutte scaricate!';
+    setTimeout(() => {
+      allBtn.textContent = '⬇ Scarica tutte (7 PNG)';
+      btns.forEach(b => b.disabled = false);
+    }, 3000);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.slide').forEach(slide => {
       const wrapper = document.createElement('div');
