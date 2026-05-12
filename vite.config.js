@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'CryptoDesk',
-        short_name: 'CryptoDesk',
+        name: 'BotVault',
+        short_name: 'BotVault',
         description: 'Monitor & control your Kraken trading bot',
         theme_color: '#0f172a',
         background_color: '#0f172a',
