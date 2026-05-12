@@ -53,6 +53,39 @@
     letter-spacing: 0.05em;
   }
 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lang-toggle {
+    display: flex;
+    background: #f0f3ff;
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .lang-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    border-radius: 16px;
+    padding: 4px 10px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+  }
+
+  .lang-btn.active {
+    background: #1a56ff;
+    color: white;
+  }
+
   /* SECTIONS */
   section {
     max-width: 680px;
@@ -459,34 +492,40 @@
     </svg>
     <span class="nav-logo-text">BotVault</span>
   </div>
-  <span class="nav-badge">TESTING IN CORSO</span>
+  <div class="nav-right">
+    <span class="nav-badge" data-i18n="nav-badge">TESTING IN CORSO</span>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('it')">IT</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-tag">Trading Automatico · Bot AI</div>
-  <h1 class="hero-title">
+  <div class="hero-tag" data-i18n="hero-tag">Trading Automatico · Bot AI</div>
+  <h1 class="hero-title" data-i18n="hero-title">
     Il bot che lavora<br><span class="accent">mentre tu dormi.</span>
   </h1>
-  <p class="hero-sub">
+  <p class="hero-sub" data-i18n="hero-sub">
     BotVault analizza il mercato ogni 60 secondi, compra e vende automaticamente su Kraken. Tu guardi i profitti.
   </p>
-  <a href="#waitlist" class="hero-cta">Voglio l'accesso anticipato →</a>
+  <a href="#waitlist" class="hero-cta" data-i18n="hero-cta">Voglio l'accesso anticipato →</a>
 </section>
 
 <!-- STATS STRIP -->
 <div class="stats-strip">
   <div class="stat-pill">
     <div class="stat-pill-value green">+1,96%</div>
-    <div class="stat-pill-label">in 2 giorni</div>
+    <div class="stat-pill-label" data-i18n="stat-days">in 2 giorni</div>
   </div>
   <div class="stat-pill">
     <div class="stat-pill-value">60s</div>
-    <div class="stat-pill-label">scansione</div>
+    <div class="stat-pill-label" data-i18n="stat-scan">scansione</div>
   </div>
   <div class="stat-pill">
     <div class="stat-pill-value">24/7</div>
-    <div class="stat-pill-label">operativo</div>
+    <div class="stat-pill-label" data-i18n="stat-active">operativo</div>
   </div>
   <div class="stat-pill">
     <div class="stat-pill-value blue">SOL</div>
@@ -496,8 +535,8 @@
 
 <!-- HOW IT WORKS -->
 <section class="steps">
-  <p class="section-tag">Come funziona</p>
-  <h2 class="section-title">4 passi.<br><span class="accent">Zero interventi.</span></h2>
+  <p class="section-tag" data-i18n="steps-tag">Come funziona</p>
+  <h2 class="section-title" data-i18n="steps-title">4 passi.<br><span class="accent">Zero interventi.</span></h2>
 
   <div class="steps-grid">
 
@@ -509,8 +548,8 @@
           <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#1a56ff" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </div>
-      <p class="step-card-title">Analizza</p>
-      <p class="step-card-desc">RSI, MACD e volume ogni 60 secondi. Individua il momento esatto per entrare.</p>
+      <p class="step-card-title" data-i18n="step1-title">Analizza</p>
+      <p class="step-card-desc" data-i18n="step1-desc">RSI, MACD e volume ogni 60 secondi. Individua il momento esatto per entrare.</p>
     </div>
 
     <div class="step-card">
@@ -521,8 +560,8 @@
           <polyline points="16,5 20,5 20,9" stroke="#1a56ff" stroke-width="2" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
-      <p class="step-card-title">Compra</p>
-      <p class="step-card-desc">Segnale confermato → ordine eseguito. Zero emozioni, zero ritardi.</p>
+      <p class="step-card-title" data-i18n="step2-title">Compra</p>
+      <p class="step-card-desc" data-i18n="step2-desc">Segnale confermato → ordine eseguito. Zero emozioni, zero ritardi.</p>
     </div>
 
     <div class="step-card">
@@ -533,8 +572,8 @@
           <polyline points="7,11 10,14 15,8" stroke="#10b981" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <p class="step-card-title">Vende</p>
-      <p class="step-card-desc">Take Profit a +4% e +8%. Stop Loss automatico a -5% per proteggere il capitale.</p>
+      <p class="step-card-title" data-i18n="step3-title">Vende</p>
+      <p class="step-card-desc" data-i18n="step3-desc">Take Profit a +4% e +8%. Stop Loss automatico a -5% per proteggere il capitale.</p>
     </div>
 
     <div class="step-card">
@@ -546,8 +585,8 @@
           <circle cx="16" cy="5" r="2.5" fill="#1a56ff"/>
         </svg>
       </div>
-      <p class="step-card-title">Notifica</p>
-      <p class="step-card-desc">Ogni trade su Telegram in tempo reale. Tu non devi fare nulla.</p>
+      <p class="step-card-title" data-i18n="step4-title">Notifica</p>
+      <p class="step-card-desc" data-i18n="step4-desc">Ogni trade su Telegram in tempo reale. Tu non devi fare nulla.</p>
     </div>
 
   </div>
@@ -555,25 +594,25 @@
 
 <!-- RESULTS -->
 <section class="results">
-  <p class="section-tag">Risultati</p>
-  <h2 class="section-title">Numeri reali.<br><span class="accent">Bot live.</span></h2>
+  <p class="section-tag" data-i18n="results-tag">Risultati</p>
+  <h2 class="section-title" data-i18n="results-title">Numeri reali.<br><span class="accent">Bot live.</span></h2>
 
   <div class="results-card">
     <div class="results-testing-badge">
       <span style="width:7px;height:7px;background:#ff9800;border-radius:50%;display:inline-block;"></span>
-      <span>Fase di testing · Live da 2 giorni</span>
+      <span data-i18n="testing-badge">Fase di testing · Live da 2 giorni</span>
     </div>
 
     <div class="results-row">
-      <span class="results-row-label">Capitale iniziale</span>
+      <span class="results-row-label" data-i18n="res-capital">Capitale iniziale</span>
       <span class="results-row-value">€102,00</span>
     </div>
     <div class="results-row">
-      <span class="results-row-label">Portafoglio attuale</span>
+      <span class="results-row-label" data-i18n="res-portfolio">Portafoglio attuale</span>
       <span class="results-row-value blue">€104,00</span>
     </div>
     <div class="results-row">
-      <span class="results-row-label">Guadagno</span>
+      <span class="results-row-label" data-i18n="res-profit">Guadagno</span>
       <span class="results-row-value green">+€2,00 (+1,96%)</span>
     </div>
     <div class="results-row">
@@ -581,11 +620,11 @@
       <span class="results-row-value">Kraken · SOL/EUR</span>
     </div>
     <div class="results-row">
-      <span class="results-row-label">Strategia</span>
+      <span class="results-row-label" data-i18n="res-strategy">Strategia</span>
       <span class="results-row-value">RSI + MACD</span>
     </div>
 
-    <p class="disclaimer">
+    <p class="disclaimer" data-i18n="disclaimer">
       Bot in fase di sviluppo e ottimizzazione. I risultati mostrati sono reali ma non garantiscono rendimenti futuri. Il trading di criptovalute comporta rischi di perdita del capitale.
     </p>
   </div>
@@ -594,14 +633,14 @@
 <!-- WAITLIST -->
 <section class="waitlist" id="waitlist">
   <div class="waitlist-card">
-    <h2>Vuoi essere tra i<br>primi ad accedere?</h2>
-    <p>Il bot non è ancora disponibile al pubblico.<br>Lascia la tua email — ti avvisiamo al lancio.</p>
+    <h2 data-i18n="wl-title">Vuoi essere tra i<br>primi ad accedere?</h2>
+    <p data-i18n="wl-sub">Il bot non è ancora disponibile al pubblico.<br>Lascia la tua email — ti avvisiamo al lancio.</p>
 
-    <div style="margin: 20px 0 0; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 14px; padding: 14px 20px; font-size: 14px; color: rgba(255,255,255,0.9); line-height: 1.5;">
+    <div style="margin: 20px 0 0; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 14px; padding: 14px 20px; font-size: 14px; color: rgba(255,255,255,0.9); line-height: 1.5;" data-i18n="wl-teaser">
       🔒 <strong style="color:white;">I primi 50 iscritti</strong> riceveranno accesso lifetime a un prezzo esclusivo, mai più disponibile.
     </div>
 
-    <div class="waitlist-success" id="successMsg">
+    <div class="waitlist-success" id="successMsg" data-i18n="wl-success">
       Perfetto! Ti avvisiamo appena BotVault apre. 🔒
     </div>
 
@@ -612,11 +651,12 @@
         placeholder="La tua email"
         required
         id="emailInput"
+        data-i18n-placeholder="email-placeholder"
       />
-      <button type="submit" class="waitlist-btn">Iscriviti</button>
+      <button type="submit" class="waitlist-btn" data-i18n="wl-btn">Iscriviti</button>
     </form>
 
-    <p class="waitlist-note">Gratuito · Nessuno spam · Solo quando è pronto</p>
+    <p class="waitlist-note" data-i18n="wl-note">Gratuito · Nessuno spam · Solo quando è pronto</p>
 
     <div class="social-row">
       <a href="https://tiktok.com/@botvault" target="_blank" class="social-btn">
@@ -631,11 +671,103 @@
   </div>
 </section>
 
-<footer>
+<footer data-i18n="footer">
   © 2026 BotVault · Trading automatico su Kraken · Non è consulenza finanziaria
 </footer>
 
 <script>
+  const t = {
+    it: {
+      'nav-badge': 'TESTING IN CORSO',
+      'hero-tag': 'Trading Automatico · Bot AI',
+      'hero-title': 'Il bot che lavora<br><span class="accent">mentre tu dormi.</span>',
+      'hero-sub': 'BotVault analizza il mercato ogni 60 secondi, compra e vende automaticamente su Kraken. Tu guardi i profitti.',
+      'hero-cta': 'Voglio l\'accesso anticipato →',
+      'stat-days': 'in 2 giorni',
+      'stat-scan': 'scansione',
+      'stat-active': 'operativo',
+      'steps-tag': 'Come funziona',
+      'steps-title': '4 passi.<br><span class="accent">Zero interventi.</span>',
+      'step1-title': 'Analizza',
+      'step1-desc': 'RSI, MACD e volume ogni 60 secondi. Individua il momento esatto per entrare.',
+      'step2-title': 'Compra',
+      'step2-desc': 'Segnale confermato → ordine eseguito. Zero emozioni, zero ritardi.',
+      'step3-title': 'Vende',
+      'step3-desc': 'Take Profit a +4% e +8%. Stop Loss automatico a -5% per proteggere il capitale.',
+      'step4-title': 'Notifica',
+      'step4-desc': 'Ogni trade su Telegram in tempo reale. Tu non devi fare nulla.',
+      'results-tag': 'Risultati',
+      'results-title': 'Numeri reali.<br><span class="accent">Bot live.</span>',
+      'testing-badge': 'Fase di testing · Live da 2 giorni',
+      'res-capital': 'Capitale iniziale',
+      'res-portfolio': 'Portafoglio attuale',
+      'res-profit': 'Guadagno',
+      'res-strategy': 'Strategia',
+      'disclaimer': 'Bot in fase di sviluppo e ottimizzazione. I risultati mostrati sono reali ma non garantiscono rendimenti futuri. Il trading di criptovalute comporta rischi di perdita del capitale.',
+      'wl-title': 'Vuoi essere tra i<br>primi ad accedere?',
+      'wl-sub': 'Il bot non è ancora disponibile al pubblico.<br>Lascia la tua email — ti avvisiamo al lancio.',
+      'wl-teaser': '🔒 <strong style="color:white;">I primi 50 iscritti</strong> riceveranno accesso lifetime a un prezzo esclusivo, mai più disponibile.',
+      'wl-success': 'Perfetto! Ti avvisiamo appena BotVault apre. 🔒',
+      'email-placeholder': 'La tua email',
+      'wl-btn': 'Iscriviti',
+      'wl-note': 'Gratuito · Nessuno spam · Solo quando è pronto',
+      'footer': '© 2026 BotVault · Trading automatico su Kraken · Non è consulenza finanziaria',
+    },
+    en: {
+      'nav-badge': 'TESTING IN PROGRESS',
+      'hero-tag': 'Automated Trading · AI Bot',
+      'hero-title': 'The bot that works<br><span class="accent">while you sleep.</span>',
+      'hero-sub': 'BotVault analyzes the market every 60 seconds, automatically buys and sells on Kraken. You watch the profits.',
+      'hero-cta': 'I want early access →',
+      'stat-days': 'in 2 days',
+      'stat-scan': 'scan',
+      'stat-active': 'active',
+      'steps-tag': 'How it works',
+      'steps-title': '4 steps.<br><span class="accent">Zero effort.</span>',
+      'step1-title': 'Analyzes',
+      'step1-desc': 'RSI, MACD and volume every 60 seconds. Identifies the exact moment to enter.',
+      'step2-title': 'Buys',
+      'step2-desc': 'Signal confirmed → order executed. Zero emotions, zero delays.',
+      'step3-title': 'Sells',
+      'step3-desc': 'Take Profit at +4% and +8%. Automatic Stop Loss at -5% to protect capital.',
+      'step4-title': 'Notifies',
+      'step4-desc': 'Every trade on Telegram in real time. You don\'t have to do anything.',
+      'results-tag': 'Results',
+      'results-title': 'Real numbers.<br><span class="accent">Bot live.</span>',
+      'testing-badge': 'Testing phase · Live for 2 days',
+      'res-capital': 'Initial capital',
+      'res-portfolio': 'Current portfolio',
+      'res-profit': 'Profit',
+      'res-strategy': 'Strategy',
+      'disclaimer': 'Bot under development and optimization. Results shown are real but do not guarantee future returns. Cryptocurrency trading involves risk of capital loss.',
+      'wl-title': 'Want to be among the<br>first to access?',
+      'wl-sub': 'The bot is not yet available to the public.<br>Leave your email — we\'ll notify you at launch.',
+      'wl-teaser': '🔒 <strong style="color:white;">The first 50 subscribers</strong> will receive lifetime access at an exclusive price, never available again.',
+      'wl-success': 'Perfect! We\'ll notify you as soon as BotVault launches. 🔒',
+      'email-placeholder': 'Your email',
+      'wl-btn': 'Subscribe',
+      'wl-note': 'Free · No spam · Only when ready',
+      'footer': '© 2026 BotVault · Automated trading on Kraken · Not financial advice',
+    }
+  }
+
+  let currentLang = 'it'
+
+  function setLang(lang) {
+    currentLang = lang
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n')
+      if (t[lang][key] !== undefined) el.innerHTML = t[lang][key]
+    })
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder')
+      if (t[lang][key] !== undefined) el.placeholder = t[lang][key]
+    })
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent === lang.toUpperCase())
+    })
+  }
+
   function handleSubmit(e) {
     e.preventDefault()
     const email = document.getElementById('emailInput').value
