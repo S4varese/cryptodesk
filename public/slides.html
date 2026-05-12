@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoDesk — Slide TikTok</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    align-items: center;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1920px;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Barra top blu */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #1a56ff, #4f83ff);
+  }
+
+  .slide-inner {
+    padding: 80px 90px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: auto;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .logo-text {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0a0a0a;
+    letter-spacing: -0.5px;
+  }
+
+  .slide-counter {
+    font-size: 22px;
+    font-weight: 600;
+    color: #999;
+    letter-spacing: 1px;
+  }
+
+  /* Icon box */
+  .icon-box {
+    position: absolute;
+    top: 220px;
+    right: 90px;
+    width: 160px;
+    height: 160px;
+    background: #f5f7ff;
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e8ecff;
+  }
+
+  /* Step label */
+  .step-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .step-label::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: #1a56ff;
+  }
+
+  .step-label span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* Big number */
+  .big-number {
+    font-size: 280px;
+    font-weight: 900;
+    color: #d8e4ff;
+    line-height: 1;
+    letter-spacing: -10px;
+    position: relative;
+    margin-bottom: -30px;
+  }
+
+  .big-number .dot {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background: #1a56ff;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-left: -20px;
+    margin-bottom: 60px;
+  }
+
+  /* Headline */
+  .headline {
+    font-size: 88px;
+    font-weight: 900;
+    color: #0a0a0a;
+    line-height: 1.05;
+    letter-spacing: -3px;
+    margin-bottom: 40px;
+  }
+
+  .headline .accent {
+    color: #1a56ff;
+    font-style: italic;
+  }
+
+  /* Body text */
+  .body-text {
+    font-size: 38px;
+    color: #888;
+    line-height: 1.5;
+    font-weight: 400;
+    max-width: 780px;
+  }
+
+  .body-text strong {
+    color: #0a0a0a;
+    font-weight: 700;
+  }
+
+  /* Steps row */
+  .steps-row {
+    display: flex;
+    gap: 0;
+    margin-top: 80px;
+  }
+
+  .step-pill {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a56ff;
+    letter-spacing: 1px;
+    padding-right: 40px;
+    border-right: 1px solid #e0e0e0;
+    margin-right: 40px;
+  }
+
+  .step-pill:last-child {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Progress dots */
+  .progress {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 60px;
+  }
+
+  .progress-dot {
+    width: 50px;
+    height: 5px;
+    border-radius: 3px;
+    background: #e0e0e0;
+  }
+
+  .progress-dot.active {
+    background: #1a56ff;
+  }
+
+  /* Stat boxes */
+  .stat-box {
+    background: #f5f7ff;
+    border: 1px solid #dce4ff;
+    border-radius: 24px;
+    padding: 50px 60px;
+    margin-bottom: 24px;
+  }
+
+  .stat-label {
+    font-size: 22px;
+    font-weight: 600;
+    color: #999;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .stat-value {
+    font-size: 72px;
+    font-weight: 900;
+    color: #1a56ff;
+    letter-spacing: -2px;
+  }
+
+  .stat-value.green { color: #00b96b; }
+
+  .stat-sub {
+    font-size: 26px;
+    color: #aaa;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* CTA button */
+  .cta-btn {
+    display: inline-block;
+    background: #1a56ff;
+    color: white;
+    font-size: 42px;
+    font-weight: 800;
+    padding: 40px 80px;
+    border-radius: 20px;
+    letter-spacing: -0.5px;
+    margin-top: 60px;
+  }
+
+  .cta-sub {
+    font-size: 30px;
+    color: #999;
+    margin-top: 30px;
+    font-weight: 500;
+  }
+
+  /* Slide 1 specific */
+  .slide-1 .content {
+    margin-top: 320px;
+  }
+
+  .slide-1 .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a56ff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+  }
+
+  .slide-1 .tag::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #1a56ff;
+    border-radius: 50%;
+  }
+
+  .slide-1 .headline {
+    font-size: 110px;
+  }
+
+  .slide-1 .circle-deco {
+    position: absolute;
+    top: 180px;
+    right: 60px;
+    width: 280px;
+    height: 280px;
+    border: 2px dashed #d0d9ff;
+    border-radius: 50%;
+  }
+
+  .slide-1 .circle-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180px;
+    height: 180px;
+    background: #e8edff;
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — INTRO -->
+<div class="slide slide-1">
+  <div class="slide-inner">
+    <div class="header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect width="52" height="52" rx="12" fill="#1a56ff" fill-opacity="0.08"/>
+          <path d="M26 6 L44 16 L44 36 L26 46 L8 36 L8 16 Z" fill="none" stroke="#1a56ff" stroke-width="2"/>
+          <rect x="16" y="22" width="5" height="10" rx="1" fill="#1a56ff"/>
+          <line x1="18.5" y1="18" x2="18.5" y2="22" stroke="#1a56ff" stroke-width="1.5"/>
+          <line x1="18.5" y1="32" x2="18.5" y2="35" stroke="#1a56ff" stroke-width="1.5"/>
+          <rect x="23.5" y="20" width="5" height="8" rx="1" fill="#aaa"/>
+          <line x1="26" y1="16" x2="26" y2="20" stroke="#aaa" stroke-width="1.5"/>
+          <line x1="26" y1="28" x2="26" y2="33" stroke="#aaa" stroke-width="1.5"/>
+          <rect x="31" y="18" width="5" height="12" rx="1" fill="#1a56ff"/>
+          <line x1="33.5" y1="14" x2="33.5" y2="18" stroke="#1a56ff" stroke-width="1.5"/>
+          <line x1="33.5" y1="30" x2="33.5" y2="34" stroke="#1a56ff" stroke-width="1.5"/>
+        </svg>
+        <span class="logo-text">CryptoDesk</span>
+      </div>
+      <span class="slide-counter">01 / 06</span>
+    </div>
+
+    <div class="slide-1 circle-deco">
+      <div class="circle-inner"></div>
+    </div>
+
+    <div class="content" style="margin-top: 360px;">
+      <div class="tag">Trading Automatico · Bot AI</div>
+      <div class="headline">
+        Il tuo bot<br>di trading,<br><span class="accent">in automatico.</span>
+      </div>
+      <p class="body-text">
+        Analizza il mercato 24/7.<br>
+        <strong>Compra e vende da solo.</strong><br>
+        Tu guardi i profitti.
+      </p>
+
+      <div class="steps-row">
+        <span class="step-pill">01 ANALIZZA</span>
+        <span class="step-pill">02 COMPRA</span>
+        <span class="step-pill">03 VENDE</span>
+        <span class="step-pill">04 NOTIFICA</span>
+      </div>
+    </div>
+
+    <div class="progress">
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2 — STEP 01 ANALIZZA -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect width="52" height="52" rx="12" fill="#1a56ff" fill-opacity="0.08"/>
+          <path d="M26 6 L44 16 L44 36 L26 46 L8 36 L8 16 Z" fill="none" stroke="#1a56ff" stroke-width="2"/>
+          <rect x="16" y="22" width="5" height="10" rx="1" fill="#1a56ff"/>
+          <rect x="23.5" y="20" width="5" height="8" rx="1" fill="#aaa"/>
+          <rect x="31" y="18" width="5" height="12" rx="1" fill="#1a56ff"/>
+        </svg>
+        <span class="logo-text">CryptoDesk</span>
+      </div>
+      <span class="slide-counter">02 / 06</span>
+    </div>
+
+    <div class="icon-box">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <circle cx="36" cy="36" r="22" stroke="#1a56ff" stroke-width="4"/>
+        <line x1="52" y1="52" x2="68" y2="68" stroke="#1a56ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="28" y1="36" x2="36" y2="28" stroke="#1a56ff" stroke-width="3" stroke-linecap="round"/>
+        <line x1="36" y1="28" x2="44" y2="38" stroke="#1a56ff" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div style="margin-top: 420px;">
+      <div class="step-label"><span>Step 01 di 04</span></div>
+      <div class="big-number">01<span class="dot"></span></div>
+      <div class="headline">Analizza il<br><span class="accent">mercato.</span></div>
+      <p class="body-text">
+        RSI, MACD e Volume ogni <strong>60 secondi.</strong><br>
+        Individua il momento esatto per entrare.
+      </p>
+    </div>
+
+    <div class="progress">
+      <div class="progress-dot"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 — STEP 02 COMPRA -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect width="52" height="52" rx="12" fill="#1a56ff" fill-opacity="0.08"/>
+          <path d="M26 6 L44 16 L44 36 L26 46 L8 36 L8 16 Z" fill="none" stroke="#1a56ff" stroke-width="2"/>
+          <rect x="16" y="22" width="5" height="10" rx="1" fill="#1a56ff"/>
+          <rect x="23.5" y="20" width="5" height="8" rx="1" fill="#aaa"/>
+          <rect x="31" y="18" width="5" height="12" rx="1" fill="#1a56ff"/>
+        </svg>
+        <span class="logo-text">CryptoDesk</span>
+      </div>
+      <span class="slide-counter">03 / 06</span>
+    </div>
+
+    <div class="icon-box">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <polyline points="10,55 25,35 40,42 55,20 70,28" stroke="#1a56ff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="58,20 70,20 70,32" stroke="#1a56ff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div style="margin-top: 420px;">
+      <div class="step-label"><span>Step 02 di 04</span></div>
+      <div class="big-number">02<span class="dot"></span></div>
+      <div class="headline">Compra al<br>momento<br><span class="accent">giusto.</span></div>
+      <p class="body-text">
+        Segnale confermato → ordine eseguito.<br>
+        <strong>Zero emozioni, zero ritardi.</strong>
+      </p>
+    </div>
+
+    <div class="progress">
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 — STEP 03 VENDE -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect width="52" height="52" rx="12" fill="#1a56ff" fill-opacity="0.08"/>
+          <path d="M26 6 L44 16 L44 36 L26 46 L8 36 L8 16 Z" fill="none" stroke="#1a56ff" stroke-width="2"/>
+          <rect x="16" y="22" width="5" height="10" rx="1" fill="#1a56ff"/>
+          <rect x="23.5" y="20" width="5" height="8" rx="1" fill="#aaa"/>
+          <rect x="31" y="18" width="5" height="12" rx="1" fill="#1a56ff"/>
+        </svg>
+        <span class="logo-text">CryptoDesk</span>
+      </div>
+      <span class="slide-counter">04 / 06</span>
+    </div>
+
+    <div class="icon-box">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="28" stroke="#00b96b" stroke-width="4"/>
+        <polyline points="26,40 36,50 54,30" stroke="#00b96b" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div style="margin-top: 420px;">
+      <div class="step-label"><span>Step 03 di 04</span></div>
+      <div class="big-number">03<span class="dot"></span></div>
+      <div class="headline">Vende con<br><span class="accent">profitto.</span></div>
+      <p class="body-text">
+        Take Profit a <strong>+4%</strong> e <strong>+8%.</strong><br>
+        Stop Loss automatico a -5% per proteggere il capitale.
+      </p>
+    </div>
+
+    <div class="progress">
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 — STEP 04 NOTIFICA -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect width="52" height="52" rx="12" fill="#1a56ff" fill-opacity="0.08"/>
+          <path d="M26 6 L44 16 L44 36 L26 46 L8 36 L8 16 Z" fill="none" stroke="#1a56ff" stroke-width="2"/>
+          <rect x="16" y="22" width="5" height="10" rx="1" fill="#1a56ff"/>
+          <rect x="23.5" y="20" width="5" height="8" rx="1" fill="#aaa"/>
+          <rect x="31" y="18" width="5" height="12" rx="1" fill="#1a56ff"/>
+        </svg>
+        <span class="logo-text">CryptoDesk</span>
+      </div>
+      <span class="slide-counter">05 / 06</span>
+    </div>
+
+    <div class="icon-box">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <path d="M40 12 C28 12 20 20 20 32 L20 48 L12 56 L68 56 L60 48 L60 32 C60 20 52 12 40 12Z" stroke="#1a56ff" stroke-width="4" fill="none"/>
+        <line x1="34" y1="64" x2="46" y2="64" stroke="#1a56ff" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="56" cy="18" r="8" fill="#1a56ff"/>
+      </svg>
+    </div>
+
+    <div style="margin-top: 420px;">
+      <div class="step-label"><span>Step 04 di 04</span></div>
+      <div class="big-number">04<span class="dot"></span></div>
+      <div class="headline">Ti notifica<br>su <span class="accent">Telegram.</span></div>
+      <p class="body-text">
+        Ogni trade eseguito,<br>
+        <strong>ricevi un messaggio in tempo reale.</strong><br>
+        Tu non devi fare nulla.
+      </p>
+    </div>
+
+    <div class="progress">
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6 — RISULTATI + CTA -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 52 52" fill="none">
+          <rect width="52" height="52" rx="12" fill="#1a56ff" fill-opacity="0.08"/>
+          <path d="M26 6 L44 16 L44 36 L26 46 L8 36 L8 16 Z" fill="none" stroke="#1a56ff" stroke-width="2"/>
+          <rect x="16" y="22" width="5" height="10" rx="1" fill="#1a56ff"/>
+          <rect x="23.5" y="20" width="5" height="8" rx="1" fill="#aaa"/>
+          <rect x="31" y="18" width="5" height="12" rx="1" fill="#1a56ff"/>
+        </svg>
+        <span class="logo-text">CryptoDesk</span>
+      </div>
+      <span class="slide-counter">06 / 06</span>
+    </div>
+
+    <div style="margin-top: 280px;">
+      <div class="tag" style="display:inline-flex; align-items:center; gap:10px; font-size:20px; font-weight:700; color:#1a56ff; letter-spacing:2px; text-transform:uppercase; margin-bottom:60px;">
+        <span style="width:10px;height:10px;background:#1a56ff;border-radius:50%;display:inline-block;"></span>
+        Risultati reali · 3 giorni
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-label">Portafoglio</div>
+        <div class="stat-value">€104,21</div>
+        <div class="stat-sub">Capitale iniziale: €102,00</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-label">Guadagno</div>
+        <div class="stat-value green">+€2,21</div>
+        <div class="stat-sub">+2,17% in 3 giorni · senza fare nulla</div>
+      </div>
+
+      <div class="headline" style="font-size:72px; margin-top:60px; margin-bottom:20px;">
+        Vuoi <span class="accent">accesso?</span>
+      </div>
+      <p class="body-text">Link in bio — piano premium disponibile.</p>
+
+      <div class="cta-btn">→ cryptodesk</div>
+    </div>
+
+    <div class="progress">
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot active"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
