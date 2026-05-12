@@ -8,7 +8,8 @@ const tabs = [
 
 export default function BottomNav({ active, onChange }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur border-t border-slate-800">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t"
+      style={{ background: '#080808', borderColor: '#1a1a1a' }}>
       <div className="max-w-lg mx-auto flex">
         {tabs.map(({ id, label, icon: Icon }) => {
           const isActive = active === id
@@ -16,12 +17,17 @@ export default function BottomNav({ active, onChange }) {
             <button
               key={id}
               onClick={() => onChange(id)}
-              className={`flex-1 flex flex-col items-center gap-1 py-3 text-xs font-semibold transition-colors
-                ${isActive ? 'text-purple-400' : 'text-slate-600 hover:text-slate-400'}`}
+              className="flex-1 flex flex-col items-center gap-1 py-3 transition-colors relative"
+              style={{ color: isActive ? '#D4AF37' : '#444' }}
             >
-              <Icon size={20} strokeWidth={isActive ? 2.5 : 1.8} />
-              {label}
-              {isActive && <span className="absolute bottom-0 w-8 h-0.5 bg-purple-400 rounded-full" />}
+              <Icon size={19} strokeWidth={isActive ? 2.5 : 1.8} />
+              <span className="text-xs font-semibold" style={{ fontSize: '10px', letterSpacing: '0.05em' }}>
+                {label.toUpperCase()}
+              </span>
+              {isActive && (
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full"
+                  style={{ background: '#D4AF37' }} />
+              )}
             </button>
           )
         })}

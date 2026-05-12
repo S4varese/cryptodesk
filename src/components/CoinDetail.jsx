@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { ArrowLeft, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, Loader } from 'lucide-react'
-import { AreaChart, Area, ReferenceLine, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 const BOT_API = import.meta.env.VITE_BOT_API_URL || null
 
-const COIN_THEME = {
-  SOL:  { color: '#8b5cf6', bg: 'from-purple-500/20', border: 'border-purple-500/40' },
-  LINK: { color: '#06b6d4', bg: 'from-cyan-500/20',   border: 'border-cyan-500/40' },
-  AVAX: { color: '#f59e0b', bg: 'from-amber-500/20',  border: 'border-amber-500/40' },
+const COIN_ACCENT = {
+  SOL:  '#D4AF37',
+  LINK: '#6366f1',
+  AVAX: '#ef4444',
 }
 
 async function executeSell(coin) {
@@ -25,18 +25,17 @@ async function executeSell(coin) {
   return await res.json()
 }
 
-function LevelRow({ label, price, current, color }) {
+function LevelRow({ label, price, current, positive }) {
   const fmt = n => new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 4 }).format(n)
   const diff = current > 0 ? ((price - current) / current * 100) : 0
-  const reached = (color === 'red' && current <= price) || (color !== 'red' && current >= price)
   return (
-    <div className="flex items-center justify-between py-2 border-b border-slate-800/60 last:border-0">
-      <span className="text-xs text-slate-500">{label}</span>
+    <div className="flex items-center justify-between py-2.5 divider last:border-0">
+      <span className="text-xs" style={{ color: '#666' }}>{label}</span>
       <div className="text-right">
-        <span className={`text-sm font-bold ${color === 'red' ? 'text-red-400' : 'text-emerald-400'}`}>
+        <span className="text-sm font-bold font-mono" style={{ color: positive ? '#10b981' : '#ef4444' }}>
           €{fmt(price)}
         </span>
-        <span className={`ml-2 text-xs ${reached ? 'text-slate-400' : 'text-slate-600'}`}>
+        <span className="ml-2 text-xs font-mono" style={{ color: '#444' }}>
           {diff >= 0 ? '+' : ''}{diff.toFixed(1)}%
         </span>
       </div>
@@ -46,19 +45,19 @@ function LevelRow({ label, price, current, color }) {
 
 export default function CoinDetail({ coin, pos, priceData, equityCurve, onBack }) {
   const [sellState, setSellState] = useState('idle')
-  const [sellMsg, setSellMsg] = useState('')
+  const [sellMsg, setSellMsg]     = useState('')
 
-  const theme = COIN_THEME[coin] || COIN_THEME.SOL
+  const accent = COIN_ACCENT[coin] || '#D4AF37'
   const currentPrice = priceData?.price || pos?.price || 0
   const currentValue = (pos?.qty || 0) * currentPrice
-  const entryPrice  = pos?.entry || null
+  const entryPrice   = pos?.entry || null
   const pnlEur  = entryPrice ? currentValue - (pos.qty * entryPrice) : null
   const pnlPct  = entryPrice ? ((currentPrice - entryPrice) / entryPrice * 100) : null
   const isUp    = (pnlPct ?? priceData?.change ?? 0) >= 0
 
-  const tp1 = entryPrice ? entryPrice * 1.04 : currentPrice * 1.04
-  const tp2 = entryPrice ? entryPrice * 1.08 : currentPrice * 1.08
-  const sl  = entryPrice ? entryPrice * 0.95 : currentPrice * 0.95
+  const tp1 = (entryPrice || currentPrice) * 1.04
+  const tp2 = (entryPrice || currentPrice) * 1.08
+  const sl  = (entryPrice || currentPrice) * 0.95
 
   const fmt2 = n => new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n)
   const fmt4 = n => new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 4 }).format(n)
@@ -80,28 +79,36 @@ export default function CoinDetail({ coin, pos, priceData, equityCurve, onBack }
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 pb-24">
+    <div className="min-h-screen pb-24" style={{ background: '#080808' }}>
+
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800 px-4 py-3">
+      <div className="sticky top-0 z-50 border-b px-4 py-3" style={{ background: '#080808', borderColor: '#1a1a1a' }}>
         <div className="max-w-lg mx-auto flex items-center gap-3">
-          <button onClick={onBack} className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
-            <ArrowLeft size={18} />
+          <button onClick={onBack} className="p-1.5 rounded-lg transition-colors" style={{ color: '#555', background: '#161616' }}>
+            <ArrowLeft size={16} />
           </button>
-          <span className="text-sm font-bold text-white">{coin} / EUR</span>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold"
+              style={{ background: accent + '20', color: accent }}>
+              {coin.slice(0,2)}
+            </div>
+            <span className="text-sm font-bold text-white tracking-wide">{coin} / EUR</span>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-lg mx-auto px-4 py-5 space-y-5">
+      <div className="max-w-lg mx-auto px-4 py-5 space-y-4">
 
-        {/* Prezzo e variazione */}
-        <div className={`rounded-2xl bg-gradient-to-br ${theme.bg} to-transparent border ${theme.border} p-5`}>
-          <p className="text-4xl font-bold text-white">€{fmt4(currentPrice)}</p>
+        {/* Prezzo */}
+        <div className="card" style={{ borderColor: accent + '30', background: 'linear-gradient(135deg, #131313, #111)' }}>
+          <p className="label mb-2">Prezzo Attuale</p>
+          <p className="text-4xl font-bold text-white font-mono">€{fmt4(currentPrice)}</p>
           <div className={`flex items-center gap-1.5 mt-2 ${isUp ? 'text-emerald-400' : 'text-red-400'}`}>
-            {isUp ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+            {isUp ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
             <span className="text-sm font-semibold">
-              {priceData?.change >= 0 ? '+' : ''}{(priceData?.change || 0).toFixed(2)}% oggi
+              {(priceData?.change || 0) >= 0 ? '+' : ''}{(priceData?.change || 0).toFixed(2)}% oggi
             </span>
-            <span className="text-xs text-slate-500 ml-1">
+            <span className="text-xs ml-1" style={{ color: '#444' }}>
               H: €{fmt2(priceData?.high || 0)} · L: €{fmt2(priceData?.low || 0)}
             </span>
           </div>
@@ -109,27 +116,28 @@ export default function CoinDetail({ coin, pos, priceData, equityCurve, onBack }
 
         {/* Posizione */}
         {pos && (
-          <div className="card space-y-3">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">La tua posizione</p>
-            <div className="grid grid-cols-2 gap-3">
+          <div className="card">
+            <p className="label mb-3">La tua posizione</p>
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-slate-500 mb-0.5">Quantità</p>
-                <p className="text-lg font-bold text-white">{pos.qty.toFixed(5)}</p>
+                <p className="label mb-1">Quantità</p>
+                <p className="text-lg font-bold text-white font-mono">{pos.qty.toFixed(5)}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500 mb-0.5">Valore attuale</p>
+                <p className="label mb-1">Valore</p>
                 <p className="text-lg font-bold text-white">€{fmt2(currentValue)}</p>
               </div>
               {entryPrice && (
                 <>
                   <div>
-                    <p className="text-xs text-slate-500 mb-0.5">Prezzo entrata</p>
-                    <p className="text-lg font-bold text-slate-300">€{fmt4(entryPrice)}</p>
+                    <p className="label mb-1">Prezzo entrata</p>
+                    <p className="text-lg font-bold font-mono" style={{ color: '#888' }}>€{fmt4(entryPrice)}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 mb-0.5">P&L</p>
+                    <p className="label mb-1">P&L</p>
                     <p className={`text-lg font-bold ${isUp ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {pnlEur >= 0 ? '+' : ''}€{fmt2(pnlEur)} ({pnlPct >= 0 ? '+' : ''}{pnlPct?.toFixed(2)}%)
+                      {pnlEur >= 0 ? '+' : ''}€{fmt2(pnlEur)}
+                      <span className="text-xs ml-1 opacity-70">({pnlPct >= 0 ? '+' : ''}{pnlPct?.toFixed(2)}%)</span>
                     </p>
                   </div>
                 </>
@@ -138,38 +146,37 @@ export default function CoinDetail({ coin, pos, priceData, equityCurve, onBack }
           </div>
         )}
 
-        {/* Livelli TP/SL */}
+        {/* Livelli */}
         <div className="card">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Livelli automatici</p>
-          <LevelRow label="Take Profit 1 (+4%)" price={tp1} current={currentPrice} color="green" />
-          <LevelRow label="Take Profit 2 (+8%)" price={tp2} current={currentPrice} color="green" />
-          <LevelRow label="Stop Loss (-5%)"     price={sl}  current={currentPrice} color="red" />
+          <p className="label mb-1">Livelli automatici</p>
+          <LevelRow label="Take Profit 1 (+4%)" price={tp1} current={currentPrice} positive />
+          <LevelRow label="Take Profit 2 (+8%)" price={tp2} current={currentPrice} positive />
+          <LevelRow label="Stop Loss (-5%)"     price={sl}  current={currentPrice} positive={false} />
         </div>
 
-        {/* Mini chart equity */}
+        {/* Mini chart */}
         {equityCurve?.length > 1 && (
           <div className="card">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Equity Curve</p>
-            <ResponsiveContainer width="100%" height={120}>
+            <p className="label mb-3">Equity Curve</p>
+            <ResponsiveContainer width="100%" height={110}>
               <AreaChart data={equityCurve}>
                 <defs>
-                  <linearGradient id="detailGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%"  stopColor={theme.color} stopOpacity={0.4} />
-                    <stop offset="95%" stopColor={theme.color} stopOpacity={0} />
+                  <linearGradient id="detGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%"  stopColor={accent} stopOpacity={0.3} />
+                    <stop offset="95%" stopColor={accent} stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="date" hide />
                 <YAxis hide domain={['auto', 'auto']} />
                 <Tooltip
                   content={({ active, payload }) => active && payload?.length ? (
-                    <div className="bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs">
-                      <p style={{ color: theme.color }} className="font-bold">€{payload[0].value?.toFixed(2)}</p>
-                      <p className="text-slate-500">{payload[0].payload.date}</p>
+                    <div className="rounded-lg px-2 py-1 text-xs border" style={{ background: '#161616', borderColor: '#2a2a2a' }}>
+                      <p className="font-bold" style={{ color: accent }}>€{payload[0].value?.toFixed(2)}</p>
                     </div>
                   ) : null}
                 />
-                <Area type="monotone" dataKey="value" stroke={theme.color} strokeWidth={2}
-                  fill="url(#detailGrad)" dot={false} />
+                <Area type="monotone" dataKey="value" stroke={accent} strokeWidth={2}
+                  fill="url(#detGrad)" dot={false} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -177,30 +184,35 @@ export default function CoinDetail({ coin, pos, priceData, equityCurve, onBack }
 
         {/* Sell */}
         {pos && (
-          <div className="space-y-2">
+          <div className="space-y-2 pt-1">
             {sellState === 'done' && (
-              <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-semibold">
+              <div className="flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-semibold text-emerald-400"
+                style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
                 <CheckCircle size={14} /> {sellMsg}
               </div>
             )}
             {sellState === 'error' && (
-              <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-semibold">
+              <div className="flex items-center justify-center gap-2 py-3.5 rounded-2xl text-sm font-semibold text-red-400"
+                style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
                 <AlertTriangle size={14} /> {sellMsg}
               </div>
             )}
             {sellState === 'confirm' && (
-              <div className="rounded-xl border border-red-500/50 bg-red-500/10 p-4 space-y-3">
-                <p className="text-sm text-red-300 text-center">
-                  Vendi {pos.qty.toFixed(5)} {coin} al prezzo di mercato?<br/>
-                  <span className="font-bold">~€{fmt2(currentValue)}</span>
+              <div className="rounded-2xl p-4 space-y-3"
+                style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.25)' }}>
+                <p className="text-sm text-center" style={{ color: '#bbb' }}>
+                  Vendi {pos.qty.toFixed(5)} {coin} al mercato?<br />
+                  <span className="font-bold text-white">~€{fmt2(currentValue)}</span>
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   <button onClick={() => setSellState('idle')}
-                    className="py-2.5 rounded-xl bg-slate-800 text-slate-300 text-sm font-semibold">
+                    className="py-2.5 rounded-xl text-sm font-semibold transition-colors"
+                    style={{ background: '#1a1a1a', color: '#888' }}>
                     Annulla
                   </button>
                   <button onClick={handleSell}
-                    className="py-2.5 rounded-xl bg-red-600 text-white text-sm font-bold">
+                    className="py-2.5 rounded-xl text-sm font-bold text-white"
+                    style={{ background: '#dc2626' }}>
                     CONFERMA
                   </button>
                 </div>
@@ -210,13 +222,11 @@ export default function CoinDetail({ coin, pos, priceData, equityCurve, onBack }
               <button
                 onClick={handleSell}
                 disabled={sellState === 'loading'}
-                className="w-full py-3.5 rounded-xl bg-red-600/90 hover:bg-red-500 text-white font-bold text-sm
-                  transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
-              >
+                className="w-full py-4 rounded-2xl text-white font-bold text-sm tracking-wide transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+                style={{ background: 'linear-gradient(135deg, #dc2626, #991b1b)' }}>
                 {sellState === 'loading'
-                  ? <><Loader size={14} className="animate-spin" /> Invio...</>
-                  : `VENDI ${coin} AL MERCATO`
-                }
+                  ? <><Loader size={14} className="animate-spin" /> Invio ordine...</>
+                  : `VENDI ${coin} AL MERCATO`}
               </button>
             )}
           </div>

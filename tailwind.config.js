@@ -4,17 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          purple: '#8b5cf6',
-          cyan: '#06b6d4',
-          green: '#10b981',
-          red: '#ef4444',
-          orange: '#f59e0b',
-        }
+        gold:  { DEFAULT: '#D4AF37', light: '#F0C848', dark: '#A08020' },
+        ink:   {
+          900: '#080808', 800: '#111111', 700: '#161616',
+          600: '#1a1a1a', 500: '#222222', 400: '#333333', 300: '#555555'
+        },
       },
       fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-      }
+      },
     },
   },
   plugins: [],

@@ -11,8 +11,8 @@ import { useKrakenData } from './hooks/useKrakenData'
 function Skeleton() {
   return (
     <div className="space-y-3 animate-pulse">
-      {[120, 80, 200, 160].map((h, i) => (
-        <div key={i} className="card bg-slate-900/50" style={{ height: h }} />
+      {[140, 90, 200, 140].map((h, i) => (
+        <div key={i} className="rounded-2xl" style={{ height: h, background: '#111', border: '1px solid #1a1a1a' }} />
       ))}
     </div>
   )
@@ -20,13 +20,9 @@ function Skeleton() {
 
 export default function App() {
   const { prices, portfolio, loading, error, lastUpdate, refresh, PAIRS } = useKrakenData()
-  const [activePage, setActivePage] = useState('portfolio')
+  const [activePage, setActivePage]   = useState('portfolio')
   const [selectedCoin, setSelectedCoin] = useState(null)
 
-  const handleCoinTap = (coin) => setSelectedCoin(coin)
-  const handleBack    = () => setSelectedCoin(null)
-
-  // Schermata dettaglio coin
   if (selectedCoin) {
     return (
       <>
@@ -35,15 +31,15 @@ export default function App() {
           pos={portfolio?.positions?.[selectedCoin] || null}
           priceData={prices?.[selectedCoin] || null}
           equityCurve={portfolio?.equityCurve}
-          onBack={handleBack}
+          onBack={() => setSelectedCoin(null)}
         />
-        <BottomNav active={activePage} onChange={(p) => { setSelectedCoin(null); setActivePage(p) }} />
+        <BottomNav active={activePage} onChange={p => { setSelectedCoin(null); setActivePage(p) }} />
       </>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen" style={{ background: '#080808' }}>
       <Header
         lastUpdate={lastUpdate}
         loading={loading}
@@ -51,32 +47,24 @@ export default function App() {
         botStatus={portfolio?.botStatus}
       />
 
-      <main className="max-w-lg mx-auto px-4 py-4 pb-24 space-y-6">
+      <main className="max-w-lg mx-auto px-4 py-4 pb-28 space-y-5">
         {error && (
-          <div className="card border border-red-500/30 bg-red-500/10 text-red-400 text-xs text-center">
+          <div className="rounded-2xl p-3 text-xs text-center" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#ef4444' }}>
             ⚠️ {error} — riprovo tra 15s
           </div>
         )}
 
-        {loading && !portfolio ? (
-          <Skeleton />
-        ) : (
+        {loading && !portfolio ? <Skeleton /> : (
           <>
             {activePage === 'portfolio' && (
               <>
-                <Portfolio
-                  portfolio={portfolio}
-                  prices={prices}
-                  onCoinTap={handleCoinTap}
-                />
+                <Portfolio portfolio={portfolio} prices={prices} onCoinTap={setSelectedCoin} />
                 <EquityCurve data={portfolio?.equityCurve} />
               </>
             )}
-
             {activePage === 'market' && (
               <LivePrices prices={prices} PAIRS={PAIRS} />
             )}
-
             {activePage === 'bot' && (
               <BotPage portfolio={portfolio} />
             )}
