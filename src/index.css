@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-slate-950 text-white font-mono antialiased;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@layer utilities {
+  .glow-purple { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+  .glow-cyan   { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+  .glow-green  { box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
+  .glow-red    { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+
+  .card {
+    @apply bg-slate-900 border border-slate-800 rounded-2xl p-4;
+  }
+  .card-glow-purple { @apply card glow-purple border-purple-500/30; }
+  .card-glow-cyan   { @apply card glow-cyan border-cyan-500/30; }
+  .card-glow-green  { @apply card glow-green border-emerald-500/30; }
+}
