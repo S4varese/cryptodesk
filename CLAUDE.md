@@ -1,4 +1,4 @@
-# CryptoDesk — Contesto Progetto
+# BotVault — Contesto Progetto
 
 ## Stack attuale
 
@@ -28,6 +28,6 @@
 ## Roadmap
 
 1. Pubblicare video TikTok + piano premium/donazione per accesso alla piattaforma
-2. Trasformare CryptoDesk in SaaS multi-utente (login, DB, bot separato per utente)
+2. Trasformare BotVault in SaaS multi-utente (login, DB, bot separato per utente)
 3. Aggiungere modifica parametri bot (TP/SL) direttamente dalla PWA
 4. Espandere a più coin al crescere del capitale
