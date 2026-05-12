@@ -8,8 +8,9 @@
     }
   ],
   "rewrites": [
-    { "source": "/slides.html", "destination": "/slides.html" },
-    { "source": "/waitlist.html", "destination": "/waitlist.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/((?!slides\\.html|waitlist\\.html).*)",
+      "destination": "/index.html"
+    }
   ]
 }
