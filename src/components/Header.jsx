@@ -1,4 +1,5 @@
 import { RefreshCw } from 'lucide-react'
+import Logo from './Logo'
 
 export default function Header({ lastUpdate, loading, onRefresh, botStatus }) {
   const timeStr = lastUpdate
@@ -13,13 +14,10 @@ export default function Header({ lastUpdate, loading, onRefresh, botStatus }) {
 
         {/* Logo */}
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
-            style={{ background: 'linear-gradient(135deg, #D4AF37, #A08020)', color: '#080808' }}>
-            CD
-          </div>
+          <Logo size={34} />
           <div>
             <p className="text-xs font-bold tracking-[0.2em] text-white">CRYPTODESK</p>
-            <p className="text-gold" style={{ fontSize: '9px', letterSpacing: '0.15em' }}>TRADING TERMINAL</p>
+            <p style={{ fontSize: '9px', letterSpacing: '0.15em', color: '#D4AF37' }}>TRADING TERMINAL</p>
           </div>
         </div>
 
