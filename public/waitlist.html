@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BotVault — Il bot che lavora mentre tu dormi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f5f7ff;
+    color: #0a0a0a;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #eaedff;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo-text {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0a0a0a;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #e65100;
+    background: #fff3e0;
+    border: 1px solid #ffb74d;
+    border-radius: 20px;
+    padding: 4px 12px;
+    letter-spacing: 0.05em;
+  }
+
+  /* SECTIONS */
+  section {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HERO */
+  .hero {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    text-align: center;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a56ff;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #1a56ff;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .hero-title {
+    font-size: clamp(40px, 8vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    color: #0a0a0a;
+    margin-bottom: 24px;
+  }
+
+  .hero-title .accent {
+    color: #1a56ff;
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 48px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: #1a56ff;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px 40px;
+    border-radius: 14px;
+    text-decoration: none;
+    letter-spacing: -0.3px;
+  }
+
+  /* STATS STRIP */
+  .stats-strip {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 48px 24px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .stat-pill {
+    background: white;
+    border: 1px solid #eaedff;
+    border-radius: 16px;
+    padding: 20px 32px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(26,86,255,0.05);
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .stat-pill-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: #1a56ff;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .stat-pill-value.green { color: #10b981; }
+
+  .stat-pill-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #a0a8c0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+
+  /* SECTION TITLE */
+  .section-tag {
+    font-size: 12px;
+    font-weight: 700;
+    color: #a0a8c0;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    color: #0a0a0a;
+    margin-bottom: 40px;
+    line-height: 1.1;
+  }
+
+  .section-title .accent { color: #1a56ff; font-style: italic; }
+
+  /* STEPS */
+  .steps {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 480px) {
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+
+  .step-card {
+    background: white;
+    border: 1px solid #eaedff;
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 1px 4px rgba(26,86,255,0.05);
+  }
+
+  .step-number {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1a56ff;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .step-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(26,86,255,0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .step-card-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0a0a0a;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .step-card-desc {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  /* RESULTS */
+  .results {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .results-card {
+    background: white;
+    border: 1px solid rgba(26,86,255,0.18);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: 0 2px 12px rgba(26,86,255,0.08);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+  }
+
+  .results-testing-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff3e0;
+    border: 1px solid #ffb74d;
+    border-radius: 50px;
+    padding: 8px 20px;
+    margin-bottom: 28px;
+  }
+
+  .results-testing-badge span {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e65100;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .results-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f3ff;
+  }
+
+  .results-row:last-child { border-bottom: none; }
+
+  .results-row-label {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .results-row-value {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0a0a0a;
+  }
+
+  .results-row-value.green { color: #10b981; }
+  .results-row-value.blue  { color: #1a56ff; }
+
+  .disclaimer {
+    font-size: 12px;
+    color: #a0a8c0;
+    line-height: 1.5;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f3ff;
+  }
+
+  /* WAITLIST */
+  .waitlist {
+    padding-top: 64px;
+    padding-bottom: 96px;
+  }
+
+  .waitlist-card {
+    background: #1a56ff;
+    border-radius: 28px;
+    padding: 48px 40px;
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    .waitlist-card { padding: 36px 24px; }
+  }
+
+  .waitlist-card h2 {
+    font-size: clamp(26px, 5vw, 36px);
+    font-weight: 900;
+    color: white;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .waitlist-card p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 12px;
+    max-width: 420px;
+    margin: 0 auto 20px;
+  }
+
+  @media (max-width: 500px) {
+    .waitlist-form { flex-direction: column; }
+  }
+
+  .waitlist-input {
+    flex: 1;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    background: rgba(255,255,255,0.95);
+    color: #0a0a0a;
+  }
+
+  .waitlist-input::placeholder { color: #a0a8c0; }
+
+  .waitlist-btn {
+    background: #0a0a0a;
+    color: white;
+    border: none;
+    padding: 16px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+
+  .waitlist-btn:hover { opacity: 0.85; }
+
+  .waitlist-note {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .waitlist-success {
+    display: none;
+    background: rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 20px 24px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  /* SOCIAL */
+  .social-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: background 0.2s;
+  }
+
+  .social-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 13px;
+    color: #a0a8c0;
+    border-top: 1px solid #eaedff;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="8" fill="#1a56ff"/>
+      <circle cx="16" cy="16" r="9" stroke="white" stroke-width="1.8"/>
+      <line x1="16" y1="7" x2="16" y2="11" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="16" y1="21" x2="16" y2="25" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="7" y1="16" x2="11" y2="16" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="21" y1="16" x2="25" y2="16" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="9.5" y1="9.5" x2="12.5" y2="12.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="19.5" y1="19.5" x2="22.5" y2="22.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="22.5" y1="9.5" x2="19.5" y2="12.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="9.5" y1="22.5" x2="12.5" y2="19.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="3.5" stroke="white" stroke-width="1.6"/>
+      <circle cx="16" cy="16" r="1.5" fill="white"/>
+    </svg>
+    <span class="nav-logo-text">BotVault</span>
+  </div>
+  <span class="nav-badge">TESTING IN CORSO</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Trading Automatico · Bot AI</div>
+  <h1 class="hero-title">
+    Il bot che lavora<br><span class="accent">mentre tu dormi.</span>
+  </h1>
+  <p class="hero-sub">
+    BotVault analizza il mercato ogni 60 secondi, compra e vende automaticamente su Kraken. Tu guardi i profitti.
+  </p>
+  <a href="#waitlist" class="hero-cta">Voglio l'accesso anticipato →</a>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-pill">
+    <div class="stat-pill-value green">+1,96%</div>
+    <div class="stat-pill-label">in 2 giorni</div>
+  </div>
+  <div class="stat-pill">
+    <div class="stat-pill-value">60s</div>
+    <div class="stat-pill-label">aggiornamento</div>
+  </div>
+  <div class="stat-pill">
+    <div class="stat-pill-value">24/7</div>
+    <div class="stat-pill-label">operativo</div>
+  </div>
+  <div class="stat-pill">
+    <div class="stat-pill-value blue">SOL</div>
+    <div class="stat-pill-label">Kraken</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="steps">
+  <p class="section-tag">Come funziona</p>
+  <h2 class="section-title">4 passi.<br><span class="accent">Zero interventi.</span></h2>
+
+  <div class="steps-grid">
+
+    <div class="step-card">
+      <p class="step-number">Step 01</p>
+      <div class="step-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="10" cy="10" r="6" stroke="#1a56ff" stroke-width="2"/>
+          <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#1a56ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="step-card-title">Analizza</p>
+      <p class="step-card-desc">RSI, MACD e volume ogni 60 secondi. Individua il momento esatto per entrare.</p>
+    </div>
+
+    <div class="step-card">
+      <p class="step-number">Step 02</p>
+      <div class="step-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <polyline points="2,15 7,9 11,12 15,5 20,8" stroke="#1a56ff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="16,5 20,5 20,9" stroke="#1a56ff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="step-card-title">Compra</p>
+      <p class="step-card-desc">Segnale confermato → ordine eseguito. Zero emozioni, zero ritardi.</p>
+    </div>
+
+    <div class="step-card">
+      <p class="step-number">Step 03</p>
+      <div class="step-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="#10b981" stroke-width="2"/>
+          <polyline points="7,11 10,14 15,8" stroke="#10b981" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="step-card-title">Vende</p>
+      <p class="step-card-desc">Take Profit a +4% e +8%. Stop Loss automatico a -5% per proteggere il capitale.</p>
+    </div>
+
+    <div class="step-card">
+      <p class="step-number">Step 04</p>
+      <div class="step-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M11 3 C7 3 5 6 5 9 L5 14 L3 16 L19 16 L17 14 L17 9 C17 6 15 3 11 3Z" stroke="#1a56ff" stroke-width="2" fill="none"/>
+          <line x1="9" y1="18" x2="13" y2="18" stroke="#1a56ff" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="16" cy="5" r="2.5" fill="#1a56ff"/>
+        </svg>
+      </div>
+      <p class="step-card-title">Notifica</p>
+      <p class="step-card-desc">Ogni trade su Telegram in tempo reale. Tu non devi fare nulla.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results">
+  <p class="section-tag">Risultati</p>
+  <h2 class="section-title">Numeri reali.<br><span class="accent">Bot live.</span></h2>
+
+  <div class="results-card">
+    <div class="results-testing-badge">
+      <span style="width:7px;height:7px;background:#ff9800;border-radius:50%;display:inline-block;"></span>
+      <span>Fase di testing · Live da 2 giorni</span>
+    </div>
+
+    <div class="results-row">
+      <span class="results-row-label">Capitale iniziale</span>
+      <span class="results-row-value">€102,00</span>
+    </div>
+    <div class="results-row">
+      <span class="results-row-label">Portafoglio attuale</span>
+      <span class="results-row-value blue">€104,00</span>
+    </div>
+    <div class="results-row">
+      <span class="results-row-label">Guadagno</span>
+      <span class="results-row-value green">+€2,00 (+1,96%)</span>
+    </div>
+    <div class="results-row">
+      <span class="results-row-label">Exchange</span>
+      <span class="results-row-value">Kraken · SOL/EUR</span>
+    </div>
+    <div class="results-row">
+      <span class="results-row-label">Strategia</span>
+      <span class="results-row-value">RSI + MACD</span>
+    </div>
+
+    <p class="disclaimer">
+      Bot in fase di sviluppo e ottimizzazione. I risultati mostrati sono reali ma non garantiscono rendimenti futuri. Il trading di criptovalute comporta rischi di perdita del capitale.
+    </p>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="waitlist-card">
+    <h2>Vuoi essere tra i<br>primi ad accedere?</h2>
+    <p>Il bot non è ancora disponibile al pubblico.<br>Lascia la tua email — ti avvisiamo al lancio.</p>
+
+    <div class="waitlist-success" id="successMsg">
+      Perfetto! Ti avvisiamo appena BotVault apre. 🔒
+    </div>
+
+    <form class="waitlist-form" id="waitlistForm" onsubmit="handleSubmit(event)">
+      <input
+        type="email"
+        class="waitlist-input"
+        placeholder="La tua email"
+        required
+        id="emailInput"
+      />
+      <button type="submit" class="waitlist-btn">Iscriviti</button>
+    </form>
+
+    <p class="waitlist-note">Gratuito · Nessuno spam · Solo quando è pronto</p>
+
+    <div class="social-row">
+      <a href="https://tiktok.com/@botvault" target="_blank" class="social-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.17 8.17 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+        @botvault
+      </a>
+      <a href="https://instagram.com/botvault" target="_blank" class="social-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none"/></svg>
+        @botvault
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 BotVault · Trading automatico su Kraken · Non è consulenza finanziaria
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault()
+    const email = document.getElementById('emailInput').value
+    if (!email) return
+    document.getElementById('waitlistForm').style.display = 'none'
+    const msg = document.getElementById('successMsg')
+    msg.style.display = 'block'
+    // Salva in localStorage come fallback
+    const list = JSON.parse(localStorage.getItem('bv_waitlist') || '[]')
+    list.push({ email, date: new Date().toISOString() })
+    localStorage.setItem('bv_waitlist', JSON.stringify(list))
+    // TODO: sostituire con il tuo endpoint Formspree:
+    // fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: JSON.stringify({email}), headers:{'Content-Type':'application/json'} })
+  }
+</script>
+
+</body>
+</html>
