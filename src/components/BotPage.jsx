@@ -73,6 +73,7 @@ export default function BotPage({ portfolio }) {
       {portfolio && (
         <div className="card">
           <p className="label mb-1">Riepilogo</p>
+          <Row label="Capitale investito" value={`€${config?.budget?.toFixed(2) ?? '102.00'}`} color="#888" />
           <Row label="Portafoglio totale" value={`€${portfolio.total?.toFixed(2)}`} />
           <Row
             label="P&L totale"
