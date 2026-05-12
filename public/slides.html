@@ -795,8 +795,6 @@
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <div id="dl-bar">
   <button id="dl-btn-all" onclick="downloadAll()">⬇ Scarica tutte (7 PNG)</button>
   <button class="dl-btn-single" onclick="downloadSingle(0)">01</button>
@@ -809,7 +807,18 @@
 </div>
 
 <script>
+  function loadH2C() {
+    if (window.html2canvas) return Promise.resolve();
+    return new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+
   async function captureSlide(slide) {
+    await loadH2C();
     const wrapper = slide.parentNode;
     const origTransform = slide.style.transform;
     const origWW = wrapper.style.width;
